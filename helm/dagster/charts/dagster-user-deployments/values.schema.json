@@ -213,7 +213,34 @@
             "title": "Tolerations",
             "type": "array"
         },
-        "UserDeployment": {
+        "UserDeploymentIncludeConfigInLaunchedRuns": {
+            "properties": {
+                "enabled": {
+                    "title": "Enabled",
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "enabled"
+            ],
+            "title": "UserDeploymentIncludeConfigInLaunchedRuns",
+            "type": "object"
+        },
+        "Volume": {
+            "$ref": "https://kubernetesjsonschema.dev/v1.18.0/_definitions.json#/definitions/io.k8s.api.core.v1.Volume",
+            "additionalProperties": true,
+            "properties": {},
+            "title": "Volume",
+            "type": "object"
+        },
+        "VolumeMount": {
+            "$ref": "https://kubernetesjsonschema.dev/v1.18.0/_definitions.json#/definitions/io.k8s.api.core.v1.VolumeMount",
+            "additionalProperties": true,
+            "properties": {},
+            "title": "VolumeMount",
+            "type": "object"
+        },
+        "UserDeploymentItem": {
             "properties": {
                 "name": {
                     "title": "Name",
@@ -544,34 +571,340 @@
                 "image",
                 "port"
             ],
-            "title": "UserDeployment",
+            "title": "UserDeploymentItem",
             "type": "object"
         },
-        "UserDeploymentIncludeConfigInLaunchedRuns": {
+        "UserDeploymentMapValue": {
             "properties": {
-                "enabled": {
-                    "title": "Enabled",
-                    "type": "boolean"
+                "name": {
+                    "title": "Name",
+                    "type": "string"
+                },
+                "image": {
+                    "$ref": "#/$defs/Image"
+                },
+                "dagsterApiGrpcArgs": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Dagsterapigrpcargs"
+                },
+                "codeServerArgs": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Codeserverargs"
+                },
+                "includeConfigInLaunchedRuns": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/UserDeploymentIncludeConfigInLaunchedRuns"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "deploymentNamespace": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Deploymentnamespace"
+                },
+                "port": {
+                    "title": "Port",
+                    "type": "integer"
+                },
+                "env": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "items": {
+                                "$ref": "#/$defs/EnvVar"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Env"
+                },
+                "envConfigMaps": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/ConfigMapEnvSource"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Envconfigmaps"
+                },
+                "envSecrets": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/SecretEnvSource"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Envsecrets"
+                },
+                "annotations": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Annotations"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "nodeSelector": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/NodeSelector"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "affinity": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Affinity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "tolerations": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Tolerations"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "podSecurityContext": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/PodSecurityContext"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "securityContext": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/SecurityContext"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "resources": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Resources"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "livenessProbe": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/LivenessProbe"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "readinessProbe": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/ReadinessProbeWithEnabled"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "startupProbe": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/StartupProbe"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "labels": {
+                    "anyOf": [
+                        {
+                            "additionalProperties": {
+                                "type": "string"
+                            },
+                            "type": "object"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Labels"
+                },
+                "volumeMounts": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/VolumeMount"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Volumemounts"
+                },
+                "volumes": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/Volume"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Volumes"
+                },
+                "schedulerName": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Schedulername"
+                },
+                "initContainers": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/Container"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Initcontainers"
+                },
+                "sidecarContainers": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/Container"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Sidecarcontainers"
+                },
+                "deploymentStrategy": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DeploymentStrategy"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
                 }
             },
             "required": [
-                "enabled"
+                "image",
+                "port"
             ],
-            "title": "UserDeploymentIncludeConfigInLaunchedRuns",
-            "type": "object"
-        },
-        "Volume": {
-            "$ref": "https://kubernetesjsonschema.dev/v1.18.0/_definitions.json#/definitions/io.k8s.api.core.v1.Volume",
-            "additionalProperties": true,
-            "properties": {},
-            "title": "Volume",
-            "type": "object"
-        },
-        "VolumeMount": {
-            "$ref": "https://kubernetesjsonschema.dev/v1.18.0/_definitions.json#/definitions/io.k8s.api.core.v1.VolumeMount",
-            "additionalProperties": true,
-            "properties": {},
-            "title": "VolumeMount",
+            "title": "UserDeploymentMapValue",
             "type": "object"
         }
     },
@@ -590,11 +923,21 @@
             "type": "string"
         },
         "deployments": {
+            "oneOf": [
+                {
             "items": {
-                "$ref": "#/$defs/UserDeployment"
+                        "$ref": "#/$defs/UserDeploymentItem"
             },
-            "title": "Deployments",
             "type": "array"
+                },
+                {
+                    "additionalProperties": {
+                        "$ref": "#/$defs/UserDeploymentMapValue"
+                    },
+                    "type": "object"
+                }
+            ],
+            "title": "Deployments"
         },
         "imagePullSecrets": {
             "items": {

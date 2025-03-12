@@ -1,5 +1,19 @@
 {{- $celeryConfigSecretName := .Values.global.celeryConfigSecretName | default .Values.celeryConfigSecretName }}
-{{ range $deployment := .Values.deployments }}
+
+{{- $deploymentsList := list }}
+{{- if kindIs "map" .Values.deployments }}
+  {{- range $key, $value := .Values.deployments }}
+    {{- $deployment := deepCopy $value }}
+    {{- if not (hasKey $deployment "name") }}
+      {{- $_ := set $deployment "name" $key }}
+    {{- end }}
+    {{- $deploymentsList = append $deploymentsList $deployment }}
+  {{- end }}
+{{- else }}
+  {{- $deploymentsList = .Values.deployments }}
+{{- end }}
+{{ range $deployment := $deploymentsList }}
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
